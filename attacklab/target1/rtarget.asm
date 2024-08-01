@@ -1011,6 +1011,7 @@ Disassembly of section .text:
   401a1e:	8d 87 89 c2 00 c9    	lea    -0x36ff3d77(%rdi),%eax
   401a24:	c3                   	retq   
 
+# movl %ecx, %esi
 0000000000401a25 <addval_187>:
   401a25:	8d 87 89 ce 38 c0    	lea    -0x3fc73177(%rdi),%eax
   401a2b:	c3                   	retq   
@@ -1019,6 +1020,7 @@ Disassembly of section .text:
   401a2c:	c7 07 81 ce 08 db    	movl   $0xdb08ce81,(%rdi)
   401a32:	c3                   	retq   
 
+# movl %edx, %ecx
 0000000000401a33 <getval_159>:
   401a33:	b8 89 d1 38 c9       	mov    $0xc938d189,%eax
   401a38:	c3                   	retq   
@@ -1027,6 +1029,7 @@ Disassembly of section .text:
   401a39:	8d 87 c8 89 e0 c3    	lea    -0x3c1f7638(%rdi),%eax
   401a3f:	c3                   	retq   
 
+# movl %eax, %edx
 0000000000401a40 <addval_487>:
   401a40:	8d 87 89 c2 84 c0    	lea    -0x3f7b3d77(%rdi),%eax
   401a46:	c3                   	retq   
