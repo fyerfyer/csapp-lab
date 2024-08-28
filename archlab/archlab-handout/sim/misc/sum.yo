@@ -1,0 +1,52 @@
+                            | # sum.ys
+                            | # written by fyerfyer in 2024.8.27
+                            | 
+0x000:                      | .pos 0
+                            | 
+0x000:                      | init:
+                            |     # Initialize stack pointer
+0x000: 30f40001000000000000 |     irmovq stack, %rsp
+                            | 
+                            |     # Set up parameters and call sum_list
+0x00a: 30f75800000000000000 |     irmovq ele1, %rdi
+0x014: 801e00000000000000   |     call sum_list
+                            | 
+                            |     # Halt the program after the sum is computed
+0x01d: 00                   |     halt
+                            | 
+0x01e:                      | sum_list:
+0x01e: 30f00000000000000000 |     irmovq $0, %rax
+                            | 
+0x028:                      | loop:
+                            |     # Check if the pointer is null
+0x028: 6277                 |     andq %rdi, %rdi
+0x02a: 735200000000000000   |     je end
+                            | 
+                            |     # Add current value to sum
+0x033: 50270000000000000000 |     mrmovq 0(%rdi), %rdx
+0x03d: 6020                 |     addq %rdx, %rax
+                            | 
+                            |     # move to the next element
+0x03f: 50770800000000000000 |     mrmovq 8(%rdi), %rdi
+                            | 
+0x049: 702800000000000000   |     jmp loop
+                            | 
+0x052:                      | end:
+0x052: 90                   |     ret
+                            | 
+                            | # Data section
+0x058:                      | .align 8
+0x058:                      | ele1:
+0x058: 0a00000000000000     |     .quad 0x00a           
+0x060: 6800000000000000     |     .quad ele2            
+0x068:                      | ele2:
+0x068: b000000000000000     |     .quad 0x0b0           
+0x070: 7800000000000000     |     .quad ele3            
+0x078:                      | ele3:
+0x078: 000c000000000000     |     .quad 0xc00           
+0x080: 0000000000000000     |     .quad 0               
+                            | 
+                            | # Stack section (grows downward)
+0x100:                      | .pos 0x100
+0x100:                      | stack:
+                            | 

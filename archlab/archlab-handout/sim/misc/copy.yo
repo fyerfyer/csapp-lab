@@ -1,0 +1,56 @@
+                            | # copy.ys
+                            | # written by fyerfyer in 2024.8.27
+                            | 
+0x000:                      | .pos 0
+                            | 
+0x000:                      | init:
+                            |     # Initialize stack pointer
+0x000: 30f40001000000000000 |     irmovq stack, %rsp
+                            | 
+                            |     # Set up parameters and call sum_list
+0x00a: 30f78800000000000000 |     irmovq src, %rdi
+0x014: 30f6a000000000000000 |     irmovq dest, %rsi
+0x01e: 30f20300000000000000 |     irmovq $3, %rdx
+0x028: 803200000000000000   |     call copy_block
+                            | 
+                            |     # Halt the program after the sum is computed
+0x031: 00                   |     halt
+                            | 
+0x032:                      | copy_block:
+                            |     # result in %rax, val in %rcx
+                            |     # store the constant value 
+0x032: 30f00000000000000000 |     irmovq $0, %rax
+0x03c: 30f90800000000000000 |     irmovq $8, %r9
+0x046: 30fa0100000000000000 |     irmovq $1, %r10
+                            | 
+0x050:                      | loop:
+0x050: 6222                 |     andq %rdx, %rdx
+0x052: 738000000000000000   |     je end
+                            | 
+0x05b: 50170000000000000000 |     mrmovq 0(%rdi), %rcx
+0x065: 40160000000000000000 |     rmmovq %rcx, 0(%rsi)
+                            | 
+                            | 
+0x06f: 6097                 |     addq %r9, %rdi
+0x071: 6096                 |     addq %r9, %rsi
+0x073: 61a2                 |     subq %r10, %rdx
+0x075: 6310                 |     xorq %rcx, %rax
+0x077: 705000000000000000   |     jmp loop
+                            | 
+0x080:                      | end:
+0x080: 90                   |     ret
+                            | 
+                            | # Data section
+0x088:                      | .align 8
+0x088:                      | src:
+0x088: 0a00000000000000     |     .quad 0x00a
+0x090: b000000000000000     |     .quad 0x0b0
+0x098: 000c000000000000     |     .quad 0xc00
+0x0a0:                      | dest:
+0x0a0: 1101000000000000     |     .quad 0x111
+0x0a8: 2202000000000000     |     .quad 0x222
+0x0b0: 3303000000000000     |     .quad 0x333
+                            | 
+                            | # Stack section (grows downward)
+0x100:                      | .pos 0x100
+0x100:                      | stack:

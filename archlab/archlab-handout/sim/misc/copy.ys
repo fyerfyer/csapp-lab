@@ -1,0 +1,55 @@
+# copy.ys
+# written by fyerfyer in 2024.8.27
+
+.pos 0
+
+init:
+    # Initialize stack pointer
+    irmovq stack, %rsp
+
+    # Set up parameters and call sum_list
+    irmovq src, %rdi
+    irmovq dest, %rsi
+    irmovq $3, %rdx
+    call copy_block
+
+    # Halt the program after the sum is computed
+    halt
+
+copy_block:
+    # result in %rax, val in %rcx
+    # store the constant value 
+    irmovq $0, %rax
+    irmovq $1, %r9
+
+loop:
+    andq %rdx, %rdx
+    je end
+
+    # perform copy process
+    mrmovq 0(%rdi), %rcx
+    rmmovq %rcx, 0(%rsi)
+
+    addq %r9, %rdi
+    addq %r9, %rsi
+    subq %r9, %rdx
+    xorq %rcx, %rax
+    jmp loop
+
+end:
+    ret
+
+# Data section
+.align 8
+src:
+    .quad 0x00a
+    .quad 0x0b0
+    .quad 0xc00
+dest:
+    .quad 0x111
+    .quad 0x222
+    .quad 0x333
+
+# Stack section (grows downward)
+.pos 0x100
+stack:

@@ -1,0 +1,53 @@
+# sum.ys
+# written by fyerfyer in 2024.8.27
+
+.pos 0
+
+init:
+    # Initialize stack pointer
+    irmovq stack, %rsp
+
+    # Set up parameters and call sum_list
+    irmovq ele1, %rdi
+    call sum_list
+
+    # Halt the program after the sum is computed
+    halt
+
+sum_list:
+    irmovq $0, %rax
+
+loop:
+    # Check if the pointer is null
+    # val in %rdx
+    andq %rdi, %rdi
+    je end
+
+    # Add current value to sum
+    mrmovq 0(%rdi), %rdx
+    addq %rdx, %rax
+
+    # move to the next element
+    mrmovq 8(%rdi), %rdi
+
+    jmp loop
+
+end:
+    ret
+
+# Data section
+.align 8
+ele1:
+    .quad 0x00a           
+    .quad ele2            
+ele2:
+    .quad 0x0b0           
+    .quad ele3            
+ele3:
+    .quad 0xc00           
+    .quad 0               
+
+# Stack section (grows downward)
+.pos 0x100
+stack:
+
